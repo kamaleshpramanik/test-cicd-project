@@ -3,19 +3,14 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "Install phase (no additional packages required)"
-
+      - echo "Installing dependencies..."
   build:
     commands:
-      - echo "Packaging application files..."
-      - rm -rf output || true
+      - echo "Building and preparing deployment package..."
       - mkdir -p output
-      - cp -r index.html appspec.yml scripts/ output/ || true
-      - cd output
-      # make scripts executable so CodeDeploy can run them
-      - chmod +x scripts/*.sh || true
-      - zip -r ../app-deploy.zip ./*
-      - cd ..
+      - cp -r index.html appspec.yml scripts/ output/
+      - chmod +x output/scripts/*.sh
 artifacts:
+  base-directory: output
   files:
-    - app-deploy.zip
+    - '**/*'
