@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing dependencies
+      - yum install -y awscli
+
+  build:
+    commands:
+      - echo "Build started on `date`"
+      - echo "Copying files to S3 or directly to EC2"
+      # Example for deploying to EC2 using SSM
+      - aws ssm send-command \
+          --instance-ids "YOUR_EC2_INSTANCE_ID" \
+          --document-name "AWS-RunShellScript" \
+          --comment "Deploying latest build" \
+          --parameters 'commands=["cd /var/www/html && sudo git pull origin main"]'
+artifacts:
+  files:
+    - '**/*'
