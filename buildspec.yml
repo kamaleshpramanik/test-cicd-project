@@ -12,9 +12,10 @@ phases:
       - mkdir -p output
       - cp -r index.html appspec.yml scripts/ output/ || true
       - cd output
+      # make scripts executable so CodeDeploy can run them
+      - chmod +x scripts/*.sh || true
       - zip -r ../app-deploy.zip ./*
       - cd ..
-
 artifacts:
   files:
     - app-deploy.zip
